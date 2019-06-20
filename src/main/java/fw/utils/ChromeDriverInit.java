@@ -17,4 +17,17 @@ public class ChromeDriverInit {
     }
 
 
+
+//    pubilc class WebDriverFactory {
+//
+//        private static WebDriver webDriver;
+//
+//        public  static WebDriver getWebDriver() {
+//            if (webDriver == null) {
+//                webDriver = // здесь код для создания объекта WebDriver
+//            }
+//            return webDriver;
+//        }
+//    }
+
 }
