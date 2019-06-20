@@ -27,8 +27,9 @@ public class CommonPage extends Page {
     /**
      * В зависимости от указанного стенда инициализирует тестовые данные
      */
-//    public void initRunProperties() {
-//        String myResource = IOUtils.toString(this.getClass().getResourceAsStream("yourfile.xml")).replace("\n","");
-//    }
+
+
+
+
 
 }
