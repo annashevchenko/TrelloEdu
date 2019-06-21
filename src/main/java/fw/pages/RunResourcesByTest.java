@@ -14,7 +14,7 @@ public class RunResourcesByTest {
 
     String RES_NAME = "testSettings.properties";
 
-    Properties getProperties() throws IOException {
+     public  Properties getProperties() throws IOException {
 
         Properties properties = new Properties();
         try (InputStream stream = this.getClass().getResourceAsStream(RES_NAME)) {
