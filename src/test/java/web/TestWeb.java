@@ -17,7 +17,8 @@ public class TestWeb  {
 
     private LoginPage loginPage;
     private BasePage basePage;
-    private Properties getProperties;
+ //   private Properties getProperties;
+    private Properties runProperties;
     WebDriver driver;
 
 
@@ -27,23 +28,22 @@ public class TestWeb  {
         driver = new ChromeDriverInit().chromeInit();
         basePage = new BasePage(driver);
         loginPage = new LoginPage(driver);
-        getProperties = new RunResourcesByTest().getProperties();
-
-
+        runProperties = new RunResourcesByTest().getProperties();
 
     }
 
-    Properties p =  getProperties;
 
-    @Description("Пробуем вызвать хром драйвер")
+
+
+
+    @Description("Пробуем открыть ресурс и выполнить авторизацию")
     @Test(description = "Тестовый тест", suiteName = ""
             , groups = {"regression"})
     public void TEST_1() {
-        basePage.openPage(p.getProperty("url"));
+        basePage.openPage(runProperties.getProperty("url"));
         loginPage.entry();
-        loginPage.authorization("trelloTestMy@yandex.ru", "Qwerty645");
+        loginPage.authorization(runProperties.getProperty("login"), runProperties.getProperty("password"));
         driver.close();
         driver.quit();
-
         }
 }
