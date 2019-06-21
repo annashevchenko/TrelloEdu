@@ -1,4 +1,4 @@
-package fw.pages;
+package fw.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ public class RunResourcesByTest {
 
     }
 
-    String RES_NAME = "testSettings.properties";
+    String RES_NAME = "settings.properties";
 
      public  Properties getProperties() throws IOException {
 

@@ -3,7 +3,7 @@ package web;
 import com.sun.org.glassfish.gmbal.Description;
 import fw.pages.BasePage;
 import fw.pages.LoginPage;
-import fw.pages.RunResourcesByTest;
+import fw.utils.RunResourcesByTest;
 import fw.utils.ChromeDriverInit;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeTest;
