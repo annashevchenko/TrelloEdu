@@ -1,21 +1,18 @@
 package fw.utils;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.io.IOException;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class ChromeDriverInit {
 
-    public ChromeDriver chromeInit(){
+    public RemoteWebDriver chromeInit() {
         // Telling the system where to find the Chrome driver
-        System.setProperty(
-                "webdriver.chrome.driver",
-                "C:/CodeProjects/TrelloEdu/src/test/resources/drivers/chromedriver.exe");
+//        System.setProperty(
+//                "webdriver.chrome.driver",
+//                "/home/phoenix/projects/TrelloEdu/src/test/resources/drivers/chromedriver.exe");
         return new ChromeDriver();
 
     }
-
 
 
 //    pubilc class WebDriverFactory {
