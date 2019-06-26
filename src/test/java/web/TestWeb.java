@@ -16,7 +16,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 
 public class TestWeb {
 
@@ -85,12 +91,39 @@ public class TestWeb {
         authorization();
         basePage.selectCreateNewBold();
         boldPage.selectFormNewBold();
-        boldPage.inputHeadlineNewBold("TestNewBold");
+        String boldName = runProperties.getProperty("boldName")+ new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.inputHeadlineNewBold(boldName);
         boldPage.selectTypeNewBold("Приватная");
         boldPage.selectChapterNewBold();
+        boldPage.selectLinkMorePhotoNewBold();
+        String findPhoto = boldPage.findStylePhotosNewBold(boldPage.findRandListPhotosNewBold());
+        boldPage.selectCloseFormPhotoNewBold();
+        String findChapter = boldPage.checkChapterNewBold();
+        assertThat("Тема новой доски верна", findPhoto, equalTo(findChapter));
+        boldPage.selectButtonCreateNewBold();
+        boldPage.selectCheckCreateNewBold(boldName);
     }
 
 
+
+    @Test(description = "Просмотр созданной доски"
+            , groups = {"regression", "smoke"})
+    public void test_3() throws Exception {
+        authorization();
+        basePage.selectCreateNewBold();
+        boldPage.selectFormNewBold();
+        String boldName = runProperties.getProperty("boldName")+ new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.inputHeadlineNewBold(boldName);
+        boldPage.selectTypeNewBold("Приватная");
+        boldPage.selectChapterNewBold();
+        boldPage.selectLinkMorePhotoNewBold();
+        String findPhoto = boldPage.findStylePhotosNewBold(boldPage.findRandListPhotosNewBold());
+        boldPage.selectCloseFormPhotoNewBold();
+        String findChapter = boldPage.checkChapterNewBold();
+        assertThat("Тема новой доски верна", findPhoto, equalTo(findChapter));
+        boldPage.selectButtonCreateNewBold();
+        boldPage.selectCheckCreateNewBold(boldName);
+    }
 
 
 // общие методы для тестов

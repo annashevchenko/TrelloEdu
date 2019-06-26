@@ -51,7 +51,7 @@ public class BasePage extends Page {
      */
     public void selectCreateNewBold() throws Exception {
         LOG.info("Находим контейнер с приветствием");
-        waitFor(By.cssSelector("p[class='bold']"),2,10).click();
+        waitFor(By.xpath("*//span[text()='Создать доску']"),2,10).click();
     }
 
 
@@ -63,6 +63,8 @@ public class BasePage extends Page {
         LOG.info("Находим контейнер с приветствием");
         waitFor(By.xpath("*//span[text()='"+textHello+"']"),2,10).click();
     }
+
+
 
 
 }
