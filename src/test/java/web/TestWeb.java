@@ -1,6 +1,7 @@
 package web;
 
 import fw.pages.BasePage;
+import fw.pages.BoldPage;
 import fw.pages.LoginPage;
 import fw.utils.ChromeDriverInit;
 import fw.utils.RunResourcesByTest;
@@ -22,6 +23,7 @@ public class TestWeb {
     private LoginPage loginPage;
     private BasePage basePage;
     private Properties runProperties;
+    private BoldPage boldPage;
     private WebDriver driver;
 
     @BeforeSuite
@@ -53,6 +55,7 @@ public class TestWeb {
         driver.manage().window().maximize();
         basePage = new BasePage(driver);
         loginPage = new LoginPage(driver);
+        boldPage = new BoldPage(driver);
         runProperties = new RunResourcesByTest().getProperties();
     }
 
@@ -65,15 +68,37 @@ public class TestWeb {
         }
     }
 
-    @Test(description = "Пробуем открыть ресурс и выполнить авторизацию")
-    public void test() throws Exception {
-        basePage.openPage(runProperties.getProperty("url"));
-        loginPage.entry();
-        loginPage.authorization(runProperties.getProperty("login"), runProperties.getProperty("password"));
+    @Test(description = "Открываем ресурс, выполняем авторизацию и проверяем приветственное сообщение на домашней странице"
+            , groups = {"regression", "smoke"})
+    public void test_1() throws Exception {
+        authorization();
         basePage.openHomeLink();
         basePage.selectTextHello(runProperties.getProperty("helloSmall"));
         basePage.selectTextHello(runProperties.getProperty("helloBig"));
-        driver.close();
-        driver.quit();
+
+    }
+
+
+    @Test(description = "Создание новой доски"
+            , groups = {"regression", "smoke"})
+    public void test_2() throws Exception {
+        authorization();
+        basePage.selectCreateNewBold();
+        boldPage.selectFormNewBold();
+        boldPage.inputHeadlineNewBold("TestNewBold");
+        boldPage.selectTypeNewBold("Приватная");
+        boldPage.selectChapterNewBold();
+    }
+
+
+
+
+// общие методы для тестов
+//*********************************************************************************************************************
+    //выполняем авторизацию
+    public void authorization() {
+        basePage.openPage(runProperties.getProperty("url"));
+        loginPage.entry();
+        loginPage.authorization(runProperties.getProperty("login"), runProperties.getProperty("password"));
     }
 }

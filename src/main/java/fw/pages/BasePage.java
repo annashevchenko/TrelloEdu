@@ -49,9 +49,20 @@ public class BasePage extends Page {
     /**
      * Метод  находит контейнер на главной странице и проверяет приветствие
      */
+    public void selectCreateNewBold() throws Exception {
+        LOG.info("Находим контейнер с приветствием");
+        waitFor(By.cssSelector("p[class='bold']"),2,10).click();
+    }
+
+
+
+    /**
+     * Метод  находит кнопку 'Создать новую доску' и нажимает на нее
+     */
     public void selectTextHello(String textHello) throws Exception {
         LOG.info("Находим контейнер с приветствием");
         waitFor(By.xpath("*//span[text()='"+textHello+"']"),2,10).click();
     }
+
 
 }
