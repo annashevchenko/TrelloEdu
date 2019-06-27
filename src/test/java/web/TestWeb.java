@@ -18,6 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -109,6 +111,10 @@ public class TestWeb {
     @Test(description = "Просмотр созданной доски"
             , groups = {"regression", "smoke"})
     public void test_3() throws Exception {
+        //тут должен быть запрос в БД, чтобы определить наличие созданных досок у пользователя
+        //проверяем, если доска найдена открываем ее, если нет, создаем сначала новую доску и выполняем просмотр
+       // List<Map<String, String>> groupCulture = databaseCaller.executeQuery("select colom from table where");
+       // String count = groupCulture.get(0).get("count");
         authorization();
         basePage.selectCreateNewBold();
         boldPage.selectFormNewBold();
@@ -124,6 +130,9 @@ public class TestWeb {
         boldPage.selectButtonCreateNewBold();
         boldPage.selectCheckCreateNewBold(boldName);
     }
+
+
+
 
 
 // общие методы для тестов
