@@ -4,8 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BoldPage extends Page {
 
@@ -81,6 +80,25 @@ public class BoldPage extends Page {
         }
 
 
+    /**
+     * Метод находит список всех Досок пользователя и сохраняет их в сортированный список
+     */
+    public List<String> findListBolds() {
+        LOG.info("Находим список всех Досок пользователя:");
+        List<WebElement> boldsList = driver.findElements(By.cssSelector("div[class='board-tile-details-name']"));
+        LOG.info("Вытаскиваем атрибут с названием доски");
+        List<String> boldsNames =  new ArrayList<>();
+        for(WebElement element : boldsList){
+           String boldName = element.getAttribute("title");
+            LOG.info("находим атрибут с названием доски, и записываем название в список: " + boldName);
+            boldsNames.add(boldName);
+            }
+        LOG.info("Сортируем полученный список");
+            Collections.sort(boldsNames);
+            return boldsNames;
+    }
+
+
 
         /**
          * Метод указывает выбронное фото и запоминает его атрибут стиль
@@ -134,7 +152,51 @@ public class BoldPage extends Page {
 
 
 
+    /**
+     * Метод находит Доску по имени
+     */
+    public void findBoldByName(String textName)  {
+        LOG.info("Находим Доску  по имени, последнему успешно созданной  у пользователя");
+        findByCss("a[class='board-tile'] div[title='" + textName + "']").click();
+    }
+
+    /**
+     * Метод находит заголовок доски
+     */
+    public void findBoldByNameHeader(String textName) throws Exception {
+        LOG.info("Проверяем, что успешно загрузилась страница доски");
+        waitFor(By.xpath("*//span[text()='"+textName+"']"),2,10).click();
+    }
+
+    /**
+     * Метод находит меню на доске
+     */
+    public void findBoldMenu() throws Exception {
+        LOG.info("Находим меню на доске");
+        waitFor(By.cssSelector("div[class='board-menu-container']"), 2, 10);
+    }
+
+    /**
+     * Метод создает описание
+     */
+    public void createBoldDescripton(String text, String textDescription ) throws Exception {
+        LOG.info("Находим в меню Добавьте описание для доски");
+        findByXpath("*//a//div[contains(text(), '" +text +"')]").click();
+        LOG.info("Находим поле для ввода описания");
+        WebElement description = driver.findElement(By.cssSelector("div[class='editable'] [class='description-content js-desc-content']"));
+        description.click();
+        LOG.info("Вводим текст описания");
+        description.sendKeys(textDescription);
+    }
 
 
+    /**
+     * Метод нажимает кнопку сохранить описание
+     */
+    public void selectSaveBoldDescripton() throws Exception {
+        LOG.info("Находим меню на доске");
+        findByCss("input[class='primary confirm mod-submit-edit js-save-edit']").click();
 
+
+    }
 }

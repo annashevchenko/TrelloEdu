@@ -65,6 +65,15 @@ public class BasePage extends Page {
     }
 
 
+    /**
+     * Метод выбирает раздел
+     */
+    // "Открываем страницу:
+    public void selectSection(String textSection) throws Exception {
+        LOG.info("Находим разделы  выбираем из списка: " + textSection);
+        waitFor(By.xpath("*//a//span[text()='"+textSection+"']"),2,10).click();
+
+    }
 
 
 }

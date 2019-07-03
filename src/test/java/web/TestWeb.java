@@ -17,10 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -108,30 +105,52 @@ public class TestWeb {
 
 
 
-    @Test(description = "Просмотр созданной доски"
+    @Test(description = "Просмотр всех имеющихся досок у пользователя"
             , groups = {"regression", "smoke"})
     public void test_3() throws Exception {
         //тут должен быть запрос в БД, чтобы определить наличие созданных досок у пользователя
         //проверяем, если доска найдена открываем ее, если нет, создаем сначала новую доску и выполняем просмотр
-       // List<Map<String, String>> groupCulture = databaseCaller.executeQuery("select colom from table where");
-       // String count = groupCulture.get(0).get("count");
+        //List<Map<String, String>> bolds = databaseCaller.executeQuery("select name from table where");
+        //ArrayList<String> boldsFromDB = (databaseCaller.getColumnAsList(bolds, "name"));
+        //Collections.sort(boldsFromDB);
         authorization();
-        basePage.selectCreateNewBold();
-        boldPage.selectFormNewBold();
-        String boldName = runProperties.getProperty("boldName")+ new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
-        boldPage.inputHeadlineNewBold(boldName);
-        boldPage.selectTypeNewBold("Приватная");
-        boldPage.selectChapterNewBold();
-        boldPage.selectLinkMorePhotoNewBold();
-        String findPhoto = boldPage.findStylePhotosNewBold(boldPage.findRandListPhotosNewBold());
-        boldPage.selectCloseFormPhotoNewBold();
-        String findChapter = boldPage.checkChapterNewBold();
-        assertThat("Тема новой доски верна", findPhoto, equalTo(findChapter));
-        boldPage.selectButtonCreateNewBold();
-        boldPage.selectCheckCreateNewBold(boldName);
+        basePage.selectSection("Доски");
+        boldPage.findListBolds();
+        // сравниваем полученные списки из БД и на странице
+       // assertThat("имена досок верны", boldsFromDB, equalTo(boldPage.findListBolds()));
     }
 
 
+    @Test(description = "Открытие созданной доски"
+            , groups = {"regression", "smoke"})
+    public void test_4() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        String name = "TestNewBold26.06.2019 16:18";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+    }
+
+
+    @Test(description = "добавить описание на доске"
+            , groups = {"regression", "smoke"})
+    public void test_5() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        String name = "TestNewBold26.06.2019 16:18";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.findBoldMenu();
+        boldPage.createBoldDescripton("Добавьте описание для доски", "Это тестовая доска");
+        boldPage.selectSaveBoldDescripton();
+
+    }
 
 
 
