@@ -135,22 +135,158 @@ public class TestWeb {
     }
 
 
-    @Test(description = "добавить описание на доске"
+//    @Test(description = "добавить описание на доске"
+//            , groups = {"regression", "smoke"})
+//    public void test_5() throws Exception {
+//        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+//        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+//        //String name = boldsName.get(0).get("name");
+//        String name = "TestNewBold26.06.2019 16:18";
+//        authorization();
+//        basePage.selectSection("Доски");
+//        boldPage.findBoldByName(name);
+//        boldPage.findBoldByNameHeader(name);
+//        boldPage.selectLinkMenu();
+//        boldPage.findBoldMenu();
+//        boldPage.selectBoldDescripton();
+//        boldPage.createBoldDescripton( "Это тестовая доска");
+//        boldPage.selectSaveBoldDescripton();
+//        boldPage.selectCloseMenuBold();
+//    }
+
+
+
+    @Test(description = "Проверяем информацию в меню о Доске"
             , groups = {"regression", "smoke"})
-    public void test_5() throws Exception {
+    public void test_6() throws Exception {
         // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold26.06.2019 16:18";
+        String userNameAll = "trelloTest";
+        String userName = "trelloTest";
+        String descriptionBold = "Это тестовая доска";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectLinkMenu();
+        boldPage.findBoldMenu();
+        boldPage.selectBoldDescripton();
+        boldPage.selectAbouteBold("О доске");
+        boldPage.selectAbouteBold("Автор");
+        boldPage.selectFindAllUserName(userNameAll);
+        boldPage.selectFindUserName(userName);
+        boldPage.selectFindlinkEditProfile("Изменить профиль");
+        boldPage.selectAbouteBold("Описание");
+        // если на доске есть описание, б.д. кнопка изменить
+        if(descriptionBold != null && !descriptionBold.isEmpty()) {
+            boldPage.selectFindButtomEditDescription("Изменить");
+            boldPage.selectFindBoldDescription(descriptionBold);
+        }
+        else
+        {
+            boldPage.selectTextInBold(runProperties.getProperty("textDesctiption"));
+        }
+        boldPage.selectHeaderTwoBold("Участники могут…");
+        boldPage.selectMessageInBold("Комментировать карточки");
+        boldPage.selectMessageInBold("Изменить права доступа…");
+        boldPage.selectCloseMenuBold("Закрыть меню доски.");
+    }
+
+
+
+
+    @Test(description = "Изменяем  фон Доски в меню (Фотографии)"
+            , groups = {"regression", "smoke"})
+    public void test_7() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
         String name = "TestNewBold26.06.2019 16:18";
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
         boldPage.findBoldByNameHeader(name);
+        boldPage.selectLinkMenu();
         boldPage.findBoldMenu();
-        boldPage.createBoldDescripton("Добавьте описание для доски", "Это тестовая доска");
-        boldPage.selectSaveBoldDescripton();
+        boldPage.selectLinksMenu("Сменить фон");
+        boldPage.selectAbouteBold("Смена фона");
+        boldPage.selectTypeBackRoundBold("Фотографии");
+        boldPage.findRandListPhotosMenuBold();
+        boldPage.selectRandPhotoInListMenuBold();
+        boldPage.selectCloseMenuBold("Вернуться.");
+    }
+
+
+
+    @Test(description = "Изменяем  фон Доски в меню (Цвета)"
+            , groups = {"regression", "smoke"})
+    public void test_8() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold04.07.2019 12:28";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectLinkMenu();
+        boldPage.findBoldMenu();
+        boldPage.selectLinksMenu("Сменить фон");
+        boldPage.selectAbouteBold("Смена фона");
+        boldPage.selectTypeBackRoundBold("Цвета");
+        boldPage.findRandListColorsMenuBold();
+        boldPage.selectRandColorInListMenuBold();
+        boldPage.selectCloseMenuBold("Вернуться.");
+    }
+
+    @Test(description = "Изменяем  фон Доски в меню (Цвета)"
+            , groups = {"regression", "smoke"})
+    public void test_9() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold04.07.2019 12:28";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectLinkMenu();
+        boldPage.findBoldMenu();
+        boldPage.selectLinksMenu("Сменить фон");
+        boldPage.selectAbouteBold("Смена фона");
+        boldPage.selectTypeBackRoundBold("Цвета");
+        boldPage.findRandListColorsMenuBold();
+        boldPage.selectRandColorInListMenuBold();
+        boldPage.selectCloseMenuBold("Вернуться.");
+    }
+
+    @Test(description = "Создание нового списка на доске"
+            , groups = {"regression", "smoke"})
+    public void test_10() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold04.07.2019 12:28";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectAddListInBold();
+        String listName = runProperties.getProperty("nameNewList")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectinputNameListInBold(listName);
+        boldPage.selectButtonSaveListInBold();
+        boldPage.selectListInBoldByName(listName);
 
     }
+
+
 
 
 
