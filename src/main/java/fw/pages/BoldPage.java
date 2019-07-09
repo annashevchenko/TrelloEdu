@@ -455,9 +455,239 @@ public class BoldPage extends Page {
      * Метод находит созданный список на Доске
      */
     public void selectListInBoldByName(String textNameList) {
-        LOG.info("Находим список на доске");
-        findByXpath("*//h2[text()='"+textNameList+"']");
+        LOG.info("Находим  на доске список: " + textNameList);
+        findByXpath("*//div[@class='list js-list-content']//h2[text()='"+textNameList+"']");
     }
+
+
+    // МЕТОДЫ ДЛЯ РАБОТЫ С КАРТОЧКАМИ
+    // *******************************************************************************************************************
+
+
+    /**
+     * Метод находим индекс необходимого списка по его имени
+     */
+    public int findIndexListByName(String textName) {
+        LOG.info("Находим все списки на доске пользователя:");
+        List<WebElement> lists = driver.findElements(By.cssSelector("div[class='list js-list-content'] h2"));
+        LOG.info("Вытаскиваем атрибут с названием списка");
+        int index = 0;
+        for (WebElement element : lists) {
+            String libfst = element.getAttribute("innerText");
+            LOG.info("Иищем нужный список: " + textName);
+            if (libfst.equals(textName)) {
+                return index;
+            } else {
+                index++;
+            }
+
+        }
+        LOG.info("Возвращаем значение индекса  листа: " + textName + "индекс равен: " + index);
+        return index;
+    }
+
+
+
+    /**
+     * Метод проверяет количество созданных карт у списка на доске
+     */
+    public int selectCountCardInListBold() {
+        LOG.info("Находим все карточки в списке:");
+        List<WebElement> listCards = driver.findElements(By.cssSelector("a[class='list-card js-member-droppable ui-droppable']"));
+        int Count = (listCards.size());
+       return Count;
+    }
+
+
+    /**
+     * Метод находит карточку по имени и открывает ее
+     */
+    public void selectCardInListByName(String cardName) throws Exception {
+//        LOG.info("Находим карточку в списке по имени : "+ cardName + " и открываем ее");
+//        findByXpath("*//a//span[text()='"+cardName+"']").click();
+//        waitFor(By.cssSelector("div[class='window-wrapper js-tab-parent']"), 2, 10);
+
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим карточку в списке по имени : "+ cardName + " и открываем ее");
+            try {
+                findByXpath("*//a//span[text()='"+cardName+"']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось найти карточку в списке: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось найти карточку в списке");
+    }
+
+
+
+    /**
+     * Метод находит форму с описанием  карточки
+     */
+    public void selectCardForm() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму с описанием карточки");
+            try {
+                findByCss("div[class='window-wrapper js-tab-parent']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось найти форму с описанием карточки: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось найти форму с описанием карточки");
+    }
+
+
+
+
+
+
+
+    /**
+     * Метод нажимает ссылку Добавить карточку у списка
+     */
+    public void selectAddCardInListBold(int index) {
+        LOG.info("Находим все ссылки Добавить карточку:");
+        List<WebElement> LinksAddCard = driver.findElements(By.xpath("*//a//span[text()='Добавить карточку']"));
+        LOG.info("Выбираем ссылку для создания карточки по индексу листа, найденного на предыдущем шаге: " + index);
+        WebElement addCard = LinksAddCard.get(index);
+        LOG.info("Нажимаем на найденную ссылку и проверяем, что открылась форма для создания карточки");
+        addCard.click();
+        findByCss("div[class='list js-list-content'] div[class='card-composer']");
+    }
+
+
+    /**
+     * Метод нажимает ссылку Добавить еще одну  карточку у списка
+     */
+    public void selectAddAnotherCardInListBold(int index) {
+        LOG.info("Находим все ссылки Добавить карточку:");
+        List<WebElement> LinksAddCard = driver.findElements(By.xpath("*//a//span[text()='Добавить еще одну карточку']"));
+        LOG.info("Выбираем ссылку для создания карточки по индексу листа, найденного на предыдущем шаге: " + index);
+        WebElement addCard = LinksAddCard.get(index);
+        LOG.info("Нажимаем на найденную ссылку и проверяем, что открылась форма для создания карточки");
+        addCard.click();
+        findByCss("div[class='list js-list-content'] div[class='list-card js-composer']");
+    }
+
+
+    /**
+     * Метод вводит заголовок карточки
+     */
+    public void selectAddCardInListBold(String textNameCard) {
+        LOG.info("Находим поле для ввода заголовка карточки и вводим текст: " + textNameCard);
+        WebElement heardCard = findByCss("div[class='list js-list-content'] div[class='card-composer'] textarea");
+        heardCard.click();
+        heardCard.sendKeys(textNameCard);
+    }
+
+
+    /**
+     * Метод сохранет карточку
+     */
+    public void selectButtonSaveCardInListBold() {
+        LOG.info("Находим кнопку Сохранить карточку и нажимаем на нее ");
+        findByCss("input[value='Добавить карточку']").click();
+    }
+
+
+    /**
+     * Метод находит созданную карту
+     */
+    public void selectfindCardInListBold(String textCard) {
+        LOG.info("Находим созданную карту");
+        findByXpath("*//a//span[text()='"+textCard+"']");
+    }
+
+
+
+    /**
+     * Метод отправляет карточку в архив
+     */
+    public void selectButtonArchiveCard() {
+        LOG.info("Отправляем авбранную карточку в архив");
+        findByCss("div span[class='icon-sm icon-archive']").click();
+    }
+
+
+
+
+    /**
+     * Метод Нажимает кнопку Удалить Карточку
+     */
+    public void selectButtonDeleteCardOnForm() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим кнопку Удалить");
+            try {
+                findByCss("a[class='button-link js-delete-card negate']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось найти кнопку Удалить карточку: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось найти кнопку Удалить карточку");
+    }
+
+
+    /**
+     * Метод Нажимает кнопку Удалить Карточку
+     */
+    public void selectConfirmationDeleteCardOnForm() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Подтверждаем удаление карточки");
+            try {
+                findByCss("div[class='pop-over is-shown'] input[value='Удалить']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить удаление: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить удаление");
+    }
+
+
+    /**
+     * Метод закрывает форму карточки
+     */
+    public void selectButtonCloseFormCard() {
+        LOG.info("закрываем форму карточки");
+        findByCss("div a[class='icon-lg icon-close dialog-close-button js-close-window']").click();
+    }
+
+
+    /**
+     * Метод проверяет отсутствие карточки в листе
+     */
+    public void selectIsCardInListPresent(String textCard) throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(2);
+
+            try {
+                LOG.info("пытаемся найти заархивированную карточку: " + textCard);
+                findByXpath("*//a//span[text()='" + textCard + "'])");
+                throw new Exception("Некорректное поведение. Элемент найден на странице");
+
+            } catch (org.openqa.selenium.NoSuchElementException e) {
+                LOG.info("Карточка  удалилась");
+                i++;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            }
+        LOG.info("Поведение корректное. Элемент не появился на странице в отведенное время");
+
+        }
+
 
 
 }

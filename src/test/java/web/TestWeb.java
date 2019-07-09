@@ -21,6 +21,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.testng.AssertJUnit.assertFalse;
 
 
 public class TestWeb {
@@ -285,6 +286,78 @@ public class TestWeb {
         boldPage.selectListInBoldByName(listName);
 
     }
+
+
+
+    @Test(description = "Создание новой карточки в списке"
+            , groups = {"regression", "smoke"})
+    public void test_11() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold04.07.2019 12:28";
+        String nameList = "NewList 05.07.2019 13:03";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        boldPage.selectfindCardInListBold(cardName);
+        //проверяем создание карточки в базе
+    }
+
+
+    @Test(description = "Удаление карточки в списке"
+            , groups = {"regression", "smoke"})
+    public void test_12() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = "TestNewBold04.07.2019 12:28";
+        String nameList = "NewList 05.07.2019 13:03";
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+       // boldPage.selectButtonCloseFormCard();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
+
+
+
 
 
 
