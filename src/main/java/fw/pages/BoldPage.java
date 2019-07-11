@@ -503,10 +503,6 @@ public class BoldPage extends Page {
      * Метод находит карточку по имени и открывает ее
      */
     public void selectCardInListByName(String cardName) throws Exception {
-//        LOG.info("Находим карточку в списке по имени : "+ cardName + " и открываем ее");
-//        findByXpath("*//a//span[text()='"+cardName+"']").click();
-//        waitFor(By.cssSelector("div[class='window-wrapper js-tab-parent']"), 2, 10);
-
         for (int i = 0; i < 5; i++) {
             sleepTest(4);
             LOG.info("Находим карточку в списке по имени : "+ cardName + " и открываем ее");
@@ -688,6 +684,182 @@ public class BoldPage extends Page {
 
         }
 
+
+
+
+    /**
+     * Метод вводит описание карточки
+     */
+    public void selectAddDescriptionCard(String textDescriptoin) {
+        LOG.info("Находим поле для ввода описания карточки и вводим текст: " + textDescriptoin);
+        WebElement descriptoinCard = findByCss("div[class='editable editing'] textarea");
+        descriptoinCard.click();
+        descriptoinCard.sendKeys(textDescriptoin);
+    }
+
+
+    /**
+     * Метод сохраняет описание карточки
+     */
+    public void selectButtonSaveDescriptionCard() {
+        LOG.info("Находим кнопку для Сохранить описания карточки и нажимаем на нее");
+        findByCss("div[class='editable editing'] input[value='Сохранить']").click();
+    }
+
+
+    /**
+     * Метод возвращает добавленное описание карточки
+     */
+    public String selectCheckDescriptionCard() {
+        LOG.info("Находим добавленное описание: ");
+        String textDescripton = findByCss("div[class='current markeddown hide-on-edit js-desc js-show-with-desc'] p").getText();
+        return textDescripton;
+    }
+
+
+
+
+    /**
+     * Метод вводит Комментарий карточки
+     */
+    public void selectAddCommentCard(String textComment) {
+        LOG.info("Находим поле для ввода комментария карточки и вводим текст: " + textComment);
+        WebElement descriptoinCard = findByCss("div[class='comment-box'] textarea[class='comment-box-input js-new-comment-input']");
+        descriptoinCard.click();
+        descriptoinCard.sendKeys(textComment);
+    }
+
+
+    /**
+     * Метод сохраняет комментарий карточки
+     */
+    public void selectButtonSaveCommentCard() {
+        LOG.info("Находим кнопку для Сохранить комментария карточки и нажимаем на нее");
+        findByCss("div[class='comment-controls u-clearfix'] input[value='Сохранить']").click();
+    }
+
+
+
+
+    /**
+     * Метод возвращает добавленный комментарий карточки
+     */
+    public String selectCheckCommentCard() {
+        LOG.info("Находим добавленное комментарий: ");
+        String textDescripton = findByCss("div[class='current-comment js-friendly-links js-open-card'] p").getText();
+        return textDescripton;
+    }
+
+    /**
+     * Метод  открывает форму для добавления метки на карточку
+     */
+    public void selectAddLabelInCard() throws Exception {
+        LOG.info("Находим кнопку Добавить:Метки и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Метки']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания и выбора Меток");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Метки']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку форму Метки: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку форму Метки");
+    }
+
+
+
+    /**
+     * Метод  выбирает метки на карточку по цвету
+     */
+    public void findLabelByColor(String colorLabel) {
+        LOG.info("Находим метку по цвету: " + colorLabel);
+        findByCss("ul[class='edit-labels-pop-over js-labels-list'] li span[data-color='"+colorLabel+"']").click();
+        }
+
+
+    /**
+     * Метод  закрывает форму для создания и выбора метки на карточку
+     */
+    public void selectButtonCloseLabel() {
+        LOG.info("находим конпку закрыть фору Метки и нажимает на нее");
+        findByCss("div[class='pop-over is-shown'] a[class='pop-over-header-close-btn icon-sm icon-close']").click();
+    }
+
+
+    /**
+     * Метод проверяет заголовок метки на карточке
+     */
+    public void selectCheckLabelCard() {
+        LOG.info("находим  заголовок метки:");
+        findByXpath("*//h3[@class='card-detail-item-header'][text()='Метки']");
+    }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления Участника на карточку
+     */
+    public void selectAddMemberInCard() throws Exception {
+        LOG.info("Находим кнопку Добавить:Участники и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Участники']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания и выбора Участников");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Участники']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку форму Участники: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку форму Участники");
+    }
+
+
+
+    /**
+     * Метод вводит электронный адрес Участника в поле
+     */
+    public void selectInputNameMemberCard(String textMember) {
+        LOG.info("Находим поле для ввода элекронного адреса участника карточки и вводим текст: " + textMember);
+        WebElement memberCard = findByCss("input[class='js-search-mem js-autofocus'][placeholder='Поиск участников']");
+        memberCard.click();
+        memberCard.sendKeys(textMember);
+    }
+
+    /**
+     * Метод нажимаем кнопку отправить запрос Участнику
+     */
+    public void selectButtonPutMemberCard() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим кнопку Отправить и нажимаем на нее");
+            try {
+                findByCss("input[class='wide primary js-send-email-invite'][value='Отправить']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось найти кнопку Отправить: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось найти кнопку Отправить");
+
+
+    }
+
+    /**
+     * Метод проверяет заголовок Участники на карточке
+     */
+    public void selectCheckMemberCard() {
+        LOG.info("находим  заголовок  Участники:");
+        findByXpath("*//h3[@class='card-detail-item-header mod-no-top-margin'][text()='Участники']");
+    }
 
 
 }

@@ -128,7 +128,7 @@ public class TestWeb {
         // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
-        String name = "TestNewBold26.06.2019 16:18";
+        String name = runProperties.getProperty("testBoldName01");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -164,7 +164,7 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold26.06.2019 16:18";
+        String name = runProperties.getProperty("testBoldName01");
         String userNameAll = "trelloTest";
         String userName = "trelloTest";
         String descriptionBold = "Это тестовая доска";
@@ -206,7 +206,7 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold26.06.2019 16:18";
+        String name = runProperties.getProperty("testBoldName01");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -230,7 +230,7 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold04.07.2019 12:28";
+        String name = runProperties.getProperty("testBoldName02");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -252,7 +252,7 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold04.07.2019 12:28";
+        String name = runProperties.getProperty("testBoldName02");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -274,7 +274,7 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold04.07.2019 12:28";
+        String name = runProperties.getProperty("testBoldName02");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -296,8 +296,8 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold04.07.2019 12:28";
-        String nameList = "NewList 05.07.2019 13:03";
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -327,8 +327,8 @@ public class TestWeb {
         //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
         //String name = boldsName.get(0).get("name");
         //String userName = boldsName.get(0).get("name");
-        String name = "TestNewBold04.07.2019 12:28";
-        String nameList = "NewList 05.07.2019 13:03";
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
         authorization();
         basePage.selectSection("Доски");
         boldPage.findBoldByName(name);
@@ -342,7 +342,6 @@ public class TestWeb {
         else {
             boldPage.selectAddAnotherCardInListBold(index);
         }
-
         String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
         boldPage.selectAddCardInListBold(cardName);
         boldPage.selectButtonSaveCardInListBold();
@@ -357,13 +356,136 @@ public class TestWeb {
     }
 
 
+    @Test(description = "Создание описание карточки и добавление комментария в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_13() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        String textDescription = runProperties.getProperty("cardDescription")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddDescriptionCard(textDescription);
+        boldPage.selectButtonSaveDescriptionCard();
+        String textComment = runProperties.getProperty("cardComment")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCommentCard(textComment);
+        boldPage.selectButtonSaveCommentCard();
+        // сравниваем описание
+         assertThat("описание карточки верно", textDescription, equalTo(boldPage.selectCheckDescriptionCard()));
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
+
+
+
+
+    @Test(description = "Добавление Метки в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_14() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        boldPage.selectAddLabelInCard();
+        boldPage.findLabelByColor("orange");
+        boldPage.findLabelByColor("green");
+        boldPage.selectButtonCloseLabel();
+        boldPage.selectCheckLabelCard();
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
+
+
+
+    @Test(description = "Добавление Участников в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_15() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        boldPage.selectAddMemberInCard();
+        boldPage.selectInputNameMemberCard(runProperties.getProperty("nameMemberCard"));
+        boldPage.selectButtonPutMemberCard();
+        boldPage.selectCheckMemberCard();
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
 
 
 
 
 
 
-// общие методы для тестов
+    // общие методы для тестов
 //*********************************************************************************************************************
     //выполняем авторизацию
     public void authorization() {
