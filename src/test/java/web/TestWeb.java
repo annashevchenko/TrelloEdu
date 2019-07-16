@@ -481,7 +481,142 @@ public class TestWeb {
     }
 
 
+    @Test(description = "Добавление Участников в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_16() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        boldPage.selectAddMemberInCard();
+        boldPage.selectInputNameMemberCard(runProperties.getProperty("nameMemberCard"));
+        boldPage.selectButtonPutMemberCard();
+        boldPage.selectCheckMemberCard();
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
 
+
+
+    @Test(description = "Добавление Чек-Листа в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_17() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+        boldPage.selectAddCheckListnCard();
+        String checkListName = runProperties.getProperty("testNameCheckList")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectInputNameCheckListCard(checkListName);
+        boldPage.selectButtonCreateCheckListCard();
+
+        String elementNameCheckList = runProperties.getProperty("testNameElementCheckList")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddElementInCheckListCard(elementNameCheckList);
+
+        boldPage.selectFormEmojiElementCheckListCard();
+        boldPage.selectAddEmojiElementCheckListCard("thumbsup");
+        boldPage.selectFormMentionElementCheckListCard();
+        boldPage.selectAddMentionElementCheckListCard("trelloTest (usertest534)");
+        boldPage.selectButtonAddElementInCheckListCard();
+        boldPage.selectCheckBoxElementCheckListCard();
+
+        boldPage.selectCheckElementListCard(elementNameCheckList + " ");
+        boldPage.selectCheckProgressBarListCard();
+
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
+
+
+
+    @Test(description = "Добавление Срока в карточку"
+            , groups = {"regression", "smoke"})
+    public void test_18() throws Exception {
+        // тут д.б. запрос в БД на последнюю успешно созданную доску у пользователя и последний успешно созданный список на доске
+        //List<Map<String, String>> boldsName = databaseCaller.executeQuery("SELECT name from tableNameBords where condition order by datecreate desc");
+        //String name = boldsName.get(0).get("name");
+        //String userName = boldsName.get(0).get("name");
+        String name = runProperties.getProperty("testBoldName02");
+        String nameList = runProperties.getProperty("testListName02");
+        authorization();
+        basePage.selectSection("Доски");
+        boldPage.findBoldByName(name);
+        boldPage.findBoldByNameHeader(name);
+        boldPage.selectListInBoldByName(nameList);
+        int index = boldPage.findIndexListByName(nameList);
+        //выполняем проверку наличия других карточек у списка, в зависимости от этого выбираем нужный метод
+        if (boldPage.selectCountCardInListBold() == 0) {
+            boldPage.selectAddCardInListBold(index);
+        }
+        else {
+            boldPage.selectAddAnotherCardInListBold(index);
+        }
+        String cardName = runProperties.getProperty("nameNewCard")+ " " + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date());
+        boldPage.selectAddCardInListBold(cardName);
+        boldPage.selectButtonSaveCardInListBold();
+        //проверяем создание карточки в базе
+        boldPage.selectCardInListByName(cardName);
+        boldPage.selectCardForm();
+
+        boldPage.selectAddTimeInCard();
+        boldPage.selectAddDateInTimeCard(10);
+        boldPage.selectAddTimeInTimeCard("12:00");
+        boldPage.selectAddCustomReminderCard("60");
+        boldPage.selectButtonSaveTimeToCard();
+
+        boldPage.selectCheckBoxTimeInCard();
+
+        boldPage.selectButtonArchiveCard();
+        boldPage.selectButtonDeleteCardOnForm();
+        boldPage.selectConfirmationDeleteCardOnForm();
+        boldPage.selectIsCardInListPresent(cardName);
+    }
 
 
 

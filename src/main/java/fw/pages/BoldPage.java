@@ -5,6 +5,8 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class BoldPage extends Page {
@@ -850,8 +852,8 @@ public class BoldPage extends Page {
         }
         throw new Exception("Не удалось найти кнопку Отправить");
 
-
     }
+
 
     /**
      * Метод проверяет заголовок Участники на карточке
@@ -860,6 +862,275 @@ public class BoldPage extends Page {
         LOG.info("находим  заголовок  Участники:");
         findByXpath("*//h3[@class='card-detail-item-header mod-no-top-margin'][text()='Участники']");
     }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления Чек-Листа на карточку
+     */
+    public void selectAddCheckListnCard() throws Exception {
+        LOG.info("Находим кнопку Добавить:Чек-Лист и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Чек-лист']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания Чек-Листа");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Добавление списка задач']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку форму Добавления списка задач: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку форму Добавления списка задач");
+    }
+
+
+
+    /**
+     * Метод вводит Наименования Списка Задач  в поле
+     */
+    public void selectInputNameCheckListCard(String textCheckList) {
+        LOG.info("Находим поле для ввода Наименования Списка Задач карточки и вводим текст: " + textCheckList);
+        WebElement checklist = findByCss("input[id='id-checklist']");
+        checklist.click();
+        checklist.sendKeys("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+        checklist.sendKeys(textCheckList);
+    }
+
+
+    /**
+     * Метод нажимаем кнопку добавить Чек-Лист
+     */
+    public void selectButtonCreateCheckListCard() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим кнопку Добавить Чек-Лист и нажимаем на нее");
+            try {
+                findByCss("input[class='primary wide confirm js-add-checklist']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось найти кнопку Добавить Чек-Лист: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось найти кнопку Добавить Чек-Лист");
+    }
+
+
+    /**
+     * Метод добавляет элемент в Списка Задач
+     */
+    public void selectAddElementInCheckListCard(String textElement) {
+        LOG.info("Находим добавить элемент в  Списке Задач карточки и вводим текст: " + textElement);
+        WebElement elementCheckList = findByCss("div[class='checklist'] textarea[placeholder='Добавить элемент']");
+        elementCheckList.click();
+        elementCheckList.sendKeys("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+        elementCheckList.sendKeys(textElement);
+    }
+
+    /**
+     * Метод нажимаем кнопку добавить элемент в Чек-Лист
+     */
+    public void selectButtonAddElementInCheckListCard() {
+        LOG.info("Находим кнопку Добавить элемент в  Списке Задач карточки и нажимаем на нее");
+        findByCss("div[class='checklist'] input[value='Добавить']").click();
+    }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления  эмодзи в элемент Чек-Листа на карточку
+     */
+    public void selectFormEmojiElementCheckListCard() throws Exception {
+        LOG.info("Находим иконку Эмодзи  и нажимаем на нее");
+        findByCss("div[class='checklist'] span[class='icon-sm icon-emoji']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания Эмодзи");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Эмодзи']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку формы Эмодзи " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку формы Эмодзи");
+    }
+
+
+    /**
+     * Метод выбирает эмодзи в  элемент  Чек-Листа
+     */
+    public void selectAddEmojiElementCheckListCard(String textTitle) {
+        LOG.info("Находим эмодзи по title " + textTitle + " и выбираем его");
+        findByCss("div[class='pop-over is-shown'] ul li a[title='"+textTitle+"']").click();
+    }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления упоминания в элемент Чек-Листа на карточку
+     */
+    public void selectFormMentionElementCheckListCard() throws Exception {
+        LOG.info("Находим иконку Упоминания  и нажимаем на нее");
+        findByCss("div[class='checklist'] span[class='icon-sm icon-mention']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания Упоминания");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Упоминание...']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку формы Упоминания " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку формы Упоминания");
+    }
+
+
+    /**
+     * Метод выбирает упонимание в  элемент  Чек-Листа
+     */
+    public void selectAddMentionElementCheckListCard(String textTitle) {
+        LOG.info("Находим упоминание по title " + textTitle + " и выбираем его");
+        findByCss("div[class='pop-over is-shown'] ul li a[title='"+textTitle+"']").click();
+    }
+
+
+    /**
+     * Метод выбирает упонимание в  элемент  Чек-Листа
+     */
+    public void selectCheckBoxElementCheckListCard() throws Exception {
+        LOG.info("Находим элемент и выбираем его");
+        findByCss("div[class='checklist-item'] div[class='checklist-item-checkbox enabled js-toggle-checklist-item']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Проверяем, что прогресс бар заполнился");
+            try {
+                findByCss("div[class='checklist-item checklist-item-state-complete']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку прогресс бар " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку прогресс бар");
+    }
+
+
+
+    /**
+     * Метод проверяет, что созданный элемент выбран
+     */
+    public void selectCheckElementListCard(String textElement) {
+        LOG.info("Находим элемент и проверем его");
+        findByXpath("*//div[@class='checklist-item checklist-item-state-complete']//span[text()='" + textElement + "']");
+    }
+
+    /**
+     * Метод проверяет, прогресс-бар
+     */
+    public void selectCheckProgressBarListCard() {
+        LOG.info("Находим прогресс-бар и проверем его");
+        findByCss("div[class='checklist-progress-bar'] div[style='width: 100%;']");
+    }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления Срока на карточку
+     */
+    public void selectAddTimeInCard() throws Exception {
+        LOG.info("Находим кнопку Добавить:Срок и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Срок']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания Срока");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Изменение даты выполнения']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку форму Изменение даты выполнения: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку форму Изменение даты выполнения");
+    }
+
+
+
+    /**
+     * Метод устанавливает дату в соответствующем поле, на указанное количество дней вперед
+     */
+    public void selectAddDateInTimeCard(int textDay) {
+        LOG.info("Находим поле Дата и устанавливает дату: плюс " + textDay + " дней от текущего дня");
+        WebElement date = findByCss("input[class='datepicker-select-input js-dpicker-date-input js-autofocus']");
+        date.click();
+        date.clear();
+        LocalDate nextDay = LocalDate.now().plusDays(textDay);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.M.yyyy");
+        String formatDateTime = nextDay.format(formatter);
+        date.sendKeys(formatDateTime);
+    }
+
+
+
+    /**
+     * Метод устанавливает время в соответствующем поле
+     */
+    public void selectAddTimeInTimeCard(String textTime) {
+        LOG.info("Находим поле Время и устанавливаем: " + textTime );
+        WebElement date = findByCss("input[class='datepicker-select-input js-dpicker-time-input']");
+        date.click();
+        date.clear();
+        date.sendKeys(textTime);
+    }
+
+
+    /**
+     * Метод Устанавливает напоминание о сроке за указанное время
+     */
+    public void selectAddCustomReminderCard(String textValue) {
+        LOG.info("Находим Установить напоминание и выбираем: " + textValue );
+        findByCss("select[class='js-custom-reminder'] option[value='"+textValue+"']").click();
+    }
+
+
+    /**
+     * Метод нажимает кнопку сохранить настройки о сроке
+     */
+    public void selectButtonSaveTimeToCard() {
+        LOG.info("Находим кнопку Сохранить настройки о сроке и нажимаем ее");
+        findByCss("input[class='primary wide confirm'][value='Сохранить']").click();
+    }
+
+
+    /**
+     * Метод устанавливает чек-бок у срока в карточке
+     */
+    public void selectCheckBoxTimeInCard() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим чек-бокс у срока и устанавливаем его");
+            try {
+                findByCss("span[class='card-detail-badge-due-date-complete-box js-card-detail-due-date-badge-complete js-details-toggle-due-date-complete']").click();
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось установить чек-бокс у установенного срока" + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось установить чек-бокс у установенного срока");
+
+    }
+
 
 
 }
