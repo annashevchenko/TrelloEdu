@@ -5,6 +5,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -607,7 +608,7 @@ public class BoldPage extends Page {
      * Метод отправляет карточку в архив
      */
     public void selectButtonArchiveCard() {
-        LOG.info("Отправляем авбранную карточку в архив");
+        LOG.info("Отправляем выбранную карточку в архив");
         findByCss("div span[class='icon-sm icon-archive']").click();
     }
 
@@ -1087,10 +1088,10 @@ public class BoldPage extends Page {
      */
     public void selectAddTimeInTimeCard(String textTime) {
         LOG.info("Находим поле Время и устанавливаем: " + textTime );
-        WebElement date = findByCss("input[class='datepicker-select-input js-dpicker-time-input']");
-        date.click();
-        date.clear();
-        date.sendKeys(textTime);
+        WebElement time = findByCss("input[class='datepicker-select-input js-dpicker-time-input']");
+        time.click();
+        time.sendKeys("\b\b\b\b\b");
+        time.sendKeys(textTime);
     }
 
 
@@ -1131,6 +1132,120 @@ public class BoldPage extends Page {
 
     }
 
+
+
+
+    /**
+     * Метод  открывает форму для перемещения карточки
+     */
+    public void selectMoveCard() throws Exception {
+        LOG.info("Находим кнопку Перемещение и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Перемещение']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для Перемещения карточки");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Перемещение карточки']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку форму Перемещение карточки: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку форму Перемещение карточки");
+    }
+
+
+
+    /**
+     * Метод выбирает доску, на которую будет перемещена карточка
+     */
+    public void selectBoldByMoveCard(String textbold) {
+        LOG.info("Находим список досок и выбираем из этого списка: " + textbold );
+        findByXpath("*//select[@class='js-select-board']//option[text()='"+textbold+"']").click();
+    }
+
+
+
+    /**
+     * Метод выбирает список, на которую будет перемещена карточка
+     */
+    public void selectListByMoveCard(String textList) throws Exception {
+        LOG.info("Находим список и выбираем из этого списка: " + textList );
+        waitFor(By.xpath("*//select[@class='js-select-list']//option[text()='"+textList+"']"), 2,10).click();
+    }
+
+
+
+
+    /**
+     * Метод нажимает кнопку переместить
+     */
+    public void selectButtonMoveCard() {
+        LOG.info("Находим кнопку Переместить карточку и нажимаем ее");
+        findByCss("input[class='primary wide js-submit'][value='Переместить']").click();
+    }
+
+
+
+
+    /**
+     * Метод  открывает форму для добавления Вложения на карточку
+     */
+    public void selectAddAttachmentInCard() throws Exception {
+        LOG.info("Находим кнопку Вложения и нажимаем на нее");
+        findByCss("div[class='window-sidebar'] a[title='Вложение']").click();
+        for (int i = 0; i < 5; i++) {
+            sleepTest(4);
+            LOG.info("Находим форму для создания вложения");
+            try {
+                findByXpath("*//div[@class='pop-over is-shown']//span[text()='Прикрепить…']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось подтвержить загрузку формы Вложение: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось подтвержить загрузку формы Вложение");
+    }
+
+
+
+    /**
+     * Метод вводит электронный адрес Участника в поле
+     */
+    public void selectInputAttachmentForCard(String textFile) {
+        LOG.info("Находим в списке С компьютера и нажимаем");
+        try {
+            WebElement element = findByCss("input[class='js-attach-file'][name='file']");
+            element.sendKeys((new File("./src/test/resources/fw/utils/"+textFile+"").getAbsolutePath()));
+
+        } catch (Exception e) {
+            System.out.println("Не удалось выполнить загрузку вложения" + e);
+        }
+    }
+
+
+    /**
+     * Метод проверяет Вложение в карточке
+     */
+    public void selectCheckAttachmentInCard() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            sleepTest(10);
+            LOG.info("находим  Вложение в карточке");
+            try {
+                findByCss("div[class='attachment-thumbnail']");
+            } catch (TimeoutException e) {
+                LOG.info("Не удалось наличие Вложения: " + e.getCause());
+                continue;
+            }
+            return;
+        }
+        throw new Exception("Не удалось наличие Вложения");
+
+
+
+    }
 
 
 }
